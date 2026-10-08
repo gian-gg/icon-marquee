@@ -1,11 +1,20 @@
 import { createHash } from "node:crypto";
 import { config } from "../config";
 import { iconCount } from "../utils/registry";
+import { icons } from "./icons";
 import { script } from "./script";
 import { styles } from "./styles";
 
-const { repoUrl, authorUrl, heroIcons, heroWidthPx, playgroundIcons } =
-  config.landing;
+const {
+  repoUrl,
+  authorUrl,
+  heroIcons,
+  footerIcons,
+  heroWidthPx,
+  playgroundIcons,
+} = config.landing;
+
+const copyIcons = `${icons.copy}${icons.copied}${icons.failed}`;
 
 export const scriptHash = `sha256-${createHash("sha256").update(script).digest("base64")}`;
 
@@ -33,9 +42,9 @@ export const landingPage = `<!doctype html>
     </div>
     <p class="phonetic">/ˈaɪkɒn mɑːˈkiː/ (EYE-kon mar-KEE) · SVG icon tickers for READMEs</p>
     <ul class="links">
-      <li><a href="${repoUrl}">GitHub</a></li>
-      <li><a href="${repoUrl}#available-icons">All icons</a></li>
-      <li><a href="#try">Try it</a></li>
+      <li><a href="${repoUrl}" target="_blank" rel="noopener">${icons.github}GitHub</a></li>
+      <li><a href="${repoUrl}#available-icons" target="_blank" rel="noopener">${icons.allIcons}All icons</a></li>
+      <li><a href="#try">${icons.tryIt}Try it</a></li>
     </ul>
   </header>
 
@@ -63,9 +72,9 @@ export const landingPage = `<!doctype html>
         <div class="preview-stage"><img id="preview" src="/v1/marquee?i=${playgroundIcons}" alt="Preview" height="56" /></div>
         <p id="status" class="status" aria-live="polite"></p>
         <dl class="snippets">
-          <div class="snippet"><dt>Markdown</dt><dd id="snippet-markdown"></dd><button type="button" class="copy" data-copy="markdown">Copy</button></div>
-          <div class="snippet"><dt>HTML</dt><dd id="snippet-html"></dd><button type="button" class="copy" data-copy="html">Copy</button></div>
-          <div class="snippet"><dt>URL</dt><dd id="snippet-url"></dd><button type="button" class="copy" data-copy="url">Copy</button></div>
+          <div class="snippet"><dt>Markdown</dt><dd id="snippet-markdown"></dd><button type="button" class="copy" data-copy="markdown" aria-label="Copy Markdown" title="Copy Markdown">${copyIcons}</button></div>
+          <div class="snippet"><dt>HTML</dt><dd id="snippet-html"></dd><button type="button" class="copy" data-copy="html" aria-label="Copy HTML" title="Copy HTML">${copyIcons}</button></div>
+          <div class="snippet"><dt>URL</dt><dd id="snippet-url"></dd><button type="button" class="copy" data-copy="url" aria-label="Copy URL" title="Copy URL">${copyIcons}</button></div>
         </dl>
       </div>
     </section>
@@ -105,9 +114,15 @@ export const landingPage = `<!doctype html>
         </li>
       </ul>
     </section>
+  </div>
 
+  <div class="ticker ticker-end" role="img" aria-label="Animated row of tech icons scrolling right">
+    <img src="/v1/marquee?i=${footerIcons}&amp;width=${heroWidthPx}&amp;direction=right" alt="" width="${heroWidthPx}" height="${config.icons.heightPx}" loading="lazy" />
+  </div>
+
+  <div class="page body">
     <footer>
-      <span>Icons by <a href="https://github.com/syvixor/skills-icons">skills-icons</a> (MIT) · <a href="${repoUrl}">Source</a> · <a href="/llms.txt">llms.txt</a> · MIT license</span>
+      <span>Icons by <a href="https://github.com/syvixor/skills-icons" target="_blank" rel="noopener">skills-icons</a> (MIT) · <a href="${repoUrl}" target="_blank" rel="noopener">Source</a> · <a href="/llms.txt">llms.txt</a> · MIT license</span>
       <a class="credit" href="${authorUrl}" target="_blank" rel="noopener">another thing by <span class="credit-name">giann.dev</span></a>
     </footer>
   </div>

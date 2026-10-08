@@ -12,6 +12,7 @@
     "typescript": "^7"
   },
   "dependencies": {
+    "@tabler/icons": "3.48.0",
     "hono": "^4.13.12"
   },
   "scripts": {

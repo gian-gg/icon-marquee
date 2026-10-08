@@ -208,6 +208,8 @@ export const config = {
     authorUrl: "https://giann.dev",
     heroIcons:
       "js,ts,react,nextjs,svelte,vue,tailwind,bun,nodejs,docker,postgres,redis,go,rust,python",
+    footerIcons:
+      "html,css,sass,vite,deno,graphql,prisma,mongo,nginx,linux,git,k8s,aws,cf,vercel,figma",
     playgroundIcons: "js,ts,react,docker,go,rust",
     snippetAlt: "icon-marquee",
     heroWidthPx: 3840,

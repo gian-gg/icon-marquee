@@ -109,6 +109,9 @@ h1 {
 }
 
 .links li + li::before { content: "/"; margin-right: 0.5rem; color: var(--ink-faint); }
+.links a { display: inline-flex; align-items: center; gap: 0.35em; }
+
+.ui-icon { width: 1em; height: 1em; flex: none; }
 
 .ticker {
   position: relative;
@@ -125,6 +128,9 @@ h1 {
   object-fit: cover;
   object-position: left center;
 }
+
+.ticker-end { margin-top: clamp(3.5rem, 2.5rem + 3vw, 5rem); }
+.ticker-end + .page footer { margin-top: 2.5rem; }
 
 section { margin-top: clamp(3rem, 2rem + 3vw, 4rem); }
 
@@ -183,7 +189,7 @@ section { margin-top: clamp(3rem, 2rem + 3vw, 4rem); }
   transition: color var(--duration) var(--ease-out);
 }
 
-.modes button + button::before { content: "/"; margin-right: 0.5rem; color: var(--ink-faint); }
+.modes button + button::before { content: "/"; display: inline-block; margin-right: 0.5rem; color: var(--ink-faint); }
 .modes button:hover { color: var(--accent); }
 .modes button[aria-pressed="true"] { color: var(--ink-bright); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
 
@@ -232,22 +238,25 @@ section { margin-top: clamp(3rem, 2rem + 3vw, 4rem); }
 }
 
 .copy {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: 0;
   background: none;
   color: var(--ink-muted);
-  font: inherit;
-  font-size: var(--text-small);
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-underline-offset: 4px;
+  font-size: 1rem;
   cursor: pointer;
   transition: color var(--duration) var(--ease-out), transform var(--duration) var(--ease-out);
 }
 
 .copy:hover { color: var(--accent); }
 .copy:active { transform: scale(0.96); }
-.copy[data-copied] { color: var(--accent); }
+.copy[data-state] { color: var(--accent); }
+.copy .ui-icon { grid-area: 1 / 1; }
+.copy .copy-done, .copy .copy-failed, .copy[data-state] .copy-idle { display: none; }
+.copy[data-state="copied"] .copy-done, .copy[data-state="failed"] .copy-failed { display: block; }
 
 .spec {
   position: relative;

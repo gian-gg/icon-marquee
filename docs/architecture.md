@@ -13,7 +13,7 @@
 ```
 src/
 ├── index.ts          # app entry: mounts the landing page at / and the API at /v1
-├── landing/          # landing page HTML, styles, client script and logo
+├── landing/          # landing page HTML, styles, client script, logo and UI icons
 ├── llms/             # builds /llms.txt from config and the icon index
 ├── config.ts         # env-backed config
 ├── utils/
@@ -67,9 +67,11 @@ Each icon's ids, and every reference to them, are prefixed with `i<index>-` when
 - The playground calls `/v1/marquee` or `/v1/icons` with `fetch` to surface errors, then shows the image and the Markdown, HTML and URL snippets. A Left/Right toggle, shown only for the marquee, adds `direction=right` to the URL when Right is picked; Left leaves the param out.
 - The response sends a Content-Security-Policy that allows the inline script by its SHA-256 hash, computed at startup. `img-src` also allows `data:` for the inline grain texture. A hash works with CDN caching, whereas a per-request nonce would be cached along with the page.
 - The visual style follows giann.dev: dark only (`color-scheme: dark`), near-black surface with film grain, warm ivory text in four levels and one mauve accent. Fonts are Libre Baskerville and Inter from Google Fonts.
+- UI icons (header links, copy buttons) come from [Tabler Icons](https://tabler.io/icons) (`@tabler/icons`, MIT). `src/landing/icons.ts` imports each SVG as text (`with { type: "text" }`) and inlines it into the HTML at startup, so the page needs no icon font, extra request or CSP change. Each copy button holds copy, check and x icons; the script sets `data-state` to `copied` or `failed` and CSS shows the matching one.
 - `color-scheme: dark` also makes the embedded icon SVGs render their dark versions, whatever the visitor's system setting.
 - The logo is a 5×4 checkerboard pixel heart in `public/logo.svg`, with its own light/dark colours. The page uses it as the favicon, and in the header as a CSS mask filled with the page's ivory, so the file's own colours don't matter there. `GET /logo.svg` serves it so `bun dev` matches Vercel, which also serves `public/` from its CDN. The README links the file by relative path, so it shows on GitHub without a deploy.
-- Settings are in `config.landing`: repo URL, hero and playground icons, hero width and cache lifetime.
+- Settings are in `config.landing`: repo URL, hero, footer and playground icons, hero width and cache lifetime.
+- A second full-width ticker above the footer shows `config.landing.footerIcons` with `direction=right`, lazy-loaded since it is below the fold.
 - The hero requests the marquee at `config.landing.heroWidthPx` (3840) and crops it to the viewport with `object-fit: cover`, so it spans the full width on any screen.
 
 ## llms.txt
@@ -101,6 +103,7 @@ Deployed on Vercel with the zero-config Hono preset, which picks up `src/index.t
 
 - `vercel.json` sets `bunVersion` so the function runs on Bun. The code uses `Bun.file`, so it does not run on Vercel's default Node runtime.
 - `public/icons` reaches the function through Vercel's file tracing. The tracer follows `new URL("../../public/icons", import.meta.url)` in `src/utils/registry.ts`, but not `import.meta.dir`, so keep the `import.meta.url` form. `includeFiles` in `vercel.json` has no effect with the Hono preset.
+- Vercel's temporary tsconfig only includes the entry file and what it imports, so loose `.d.ts` files are not picked up. `src/landing/icons.ts` pulls in `svg.d.ts` with a `/// <reference path>` for that reason.
 - `tsconfig.json` sets `typeRoots`. Vercel transpiles through a temporary tsconfig in `/tmp` that extends ours, and without `typeRoots` it cannot find `types: ["bun"]`.
 - `APP_NAME` must be set in the Vercel project's environment variables, or the function fails at startup.
 - Check a build locally with `bunx vercel build`. It needs `.vercel/project.json`, which `vercel link` or `vercel pull` creates.

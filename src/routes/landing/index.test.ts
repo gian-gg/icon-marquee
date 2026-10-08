@@ -12,6 +12,12 @@ describe("GET /", () => {
     expect(body).toContain('src="/v1/marquee?i=');
   });
 
+  test("shows a second marquee scrolling right near the bottom", async () => {
+    const body = await (await landingRoutes.request("/")).text();
+
+    expect(body).toMatch(/class="ticker ticker-end"[\s\S]*?direction=right/);
+  });
+
   test("allows only the inline script whose hash is in the CSP", async () => {
     const res = await landingRoutes.request("/");
 

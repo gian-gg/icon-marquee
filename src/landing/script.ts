@@ -88,16 +88,18 @@ export const script = `
   document.querySelectorAll("[data-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       const text = fields[button.dataset.copy].textContent;
+      const label = button.getAttribute("aria-label");
       try {
         await navigator.clipboard.writeText(text);
-        button.dataset.copied = "";
-        button.textContent = "Copied";
+        button.dataset.state = "copied";
+        button.setAttribute("aria-label", "Copied");
       } catch {
-        button.textContent = "Failed";
+        button.dataset.state = "failed";
+        button.setAttribute("aria-label", "Copy failed");
       }
       setTimeout(() => {
-        delete button.dataset.copied;
-        button.textContent = "Copy";
+        delete button.dataset.state;
+        button.setAttribute("aria-label", label);
       }, 1500);
     });
   });
