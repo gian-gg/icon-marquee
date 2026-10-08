@@ -1,10 +1,13 @@
 import { Hono } from "hono";
 import { config } from "../../config";
 import { loadIcons } from "../../utils/load";
-import { renderIconMarquee } from "../../utils/render";
+import { type MarqueeDirection, renderIconMarquee } from "../../utils/render";
 import { svgResponse } from "../../utils/respond";
 
-const { maxWidthPx } = config.marquee;
+const { maxWidthPx, directions } = config.marquee;
+
+const isDirection = (value: string): value is MarqueeDirection =>
+  (directions as readonly string[]).includes(value);
 
 export const marqueeRoutes = new Hono();
 
@@ -23,6 +26,16 @@ marqueeRoutes.get("/", async (c) => {
     );
   }
 
+  const direction = c.req.query("direction");
+  if (direction !== undefined && !isDirection(direction)) {
+    return c.json(
+      {
+        error: `Query param 'direction' must be one of: ${directions.join(", ")}`,
+      },
+      400,
+    );
+  }
+
   const result = await loadIcons(c.req.query("i"));
   if ("error" in result) {
     return c.json({ error: result.error }, 400);
@@ -30,7 +43,7 @@ marqueeRoutes.get("/", async (c) => {
 
   return svgResponse(
     c,
-    renderIconMarquee(result.svgs, widthPx),
+    renderIconMarquee(result.svgs, widthPx, direction),
     result.unknown,
   );
 });

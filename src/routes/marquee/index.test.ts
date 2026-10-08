@@ -69,6 +69,29 @@ describe("GET /marquee", () => {
     expect(body.match(/<g transform=/g)).toHaveLength(14);
   });
 
+  test("scrolls right when direction is right", async () => {
+    const res = await marqueeRoutes.request("/?i=js,html&direction=right");
+
+    expect(res.status).toBe(200);
+    expect(await res.text()).toContain("linear infinite reverse");
+  });
+
+  test("scrolls left by default and when direction is left", async () => {
+    for (const query of ["", "&direction=left"]) {
+      const res = await marqueeRoutes.request(`/?i=js,html${query}`);
+
+      expect(await res.text()).not.toContain("reverse");
+    }
+  });
+
+  test("rejects an unknown direction", async () => {
+    for (const direction of ["up", "", "RIGHT"]) {
+      const res = await marqueeRoutes.request(`/?i=js&direction=${direction}`);
+
+      expect(res.status).toBe(400);
+    }
+  });
+
   test("rejects a width that is not a whole number in range", async () => {
     for (const width of ["0", "abc", "1.5", "3841"]) {
       const res = await marqueeRoutes.request(`/?i=js&width=${width}`);

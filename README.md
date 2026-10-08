@@ -42,7 +42,7 @@ Agents and LLMs: read [`https://icon-marquee.giann.dev/llms.txt`](https://icon-m
 https://icon-marquee.giann.dev/v1/marquee?i=html,css,js,ts,react,vue,svelte,angular
 ```
 
-- The icons scroll left at a constant 30px/s, so a longer list makes a longer loop. 8 icons loop every 15 seconds.
+- The icons scroll left at a constant 30px/s (pass `direction=right` to flip it), so a longer list makes a longer loop. 8 icons loop every 15 seconds.
 - The visible window is at most 400px wide. With fewer icons than fill 400px, the window shrinks to exactly one row and still loops.
 - Pass `width` to set the window yourself, up to 3840px. The row repeats to fill it, so even a few icons can span a full-width banner.
 - The animation stops for viewers who turn on reduced motion (`prefers-reduced-motion: reduce`).
@@ -54,6 +54,14 @@ A wide banner, with three icons repeated to fill 800px:
 
 ```
 https://icon-marquee.giann.dev/v1/marquee?i=go,rust,zig&width=800
+```
+
+Scrolling right:
+
+![right marquee](https://icon-marquee.giann.dev/v1/marquee?i=go,rust,zig&direction=right)
+
+```
+https://icon-marquee.giann.dev/v1/marquee?i=go,rust,zig&direction=right
 ```
 
 A short list:
@@ -80,6 +88,7 @@ The same icons in a static row, in the order you list them.
 | --- | --- | --- |
 | `i` | yes | Comma-separated icon names or short names, e.g. `i=js,ts,react` |
 | `width` | no | `/v1/marquee` only. Window width in px, a whole number from 1 to 3840, e.g. `width=1200` |
+| `direction` | no | `/v1/marquee` only. `left` (default) or `right` |
 
 Behaviour of the `i` list:
 

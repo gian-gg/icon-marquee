@@ -2,6 +2,8 @@ import { config } from "../config";
 import { scopeIds } from "./scope-ids";
 
 const { sizeUnits, gapUnits, heightPx } = config.icons;
+
+export type MarqueeDirection = (typeof config.marquee.directions)[number];
 const stride = sizeUnits + gapUnits;
 
 const toPx = (units: number): number => (units * heightPx) / sizeUnits;
@@ -27,6 +29,7 @@ export function renderIconRow(svgs: readonly string[]): string {
 export function renderIconMarquee(
   svgs: readonly string[],
   widthPx?: number,
+  direction: MarqueeDirection = "left",
 ): string {
   const period = svgs.length * stride;
   const width =
@@ -35,7 +38,8 @@ export function renderIconMarquee(
       : toUnits(widthPx);
   const copies = Math.ceil(width / period) + 1;
   const duration = (toPx(period) / config.marquee.speedPxPerS).toFixed(2);
-  const style = `<style>@keyframes scroll{to{transform:translateX(-${period}px)}}.track{animation:scroll ${duration}s linear infinite}@media (prefers-reduced-motion:reduce){.track{animation:none}}</style>`;
+  const reverse = direction === "right" ? " reverse" : "";
+  const style = `<style>@keyframes scroll{to{transform:translateX(-${period}px)}}.track{animation:scroll ${duration}s linear infinite${reverse}}@media (prefers-reduced-motion:reduce){.track{animation:none}}</style>`;
   const rows = Array.from({ length: copies }, (_, copy) =>
     rowMarkup(svgs, copy * period),
   ).join("");

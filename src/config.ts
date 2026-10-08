@@ -201,6 +201,7 @@ export const config = {
     defaultWidthPx: 400,
     maxWidthPx: 3840,
     speedPxPerS: 30,
+    directions: ["left", "right"],
   },
   landing: {
     repoUrl: "https://github.com/gian-gg/icon-marquee",

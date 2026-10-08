@@ -18,11 +18,12 @@ Base URL: ${origin}
 ## Endpoints
 
 ### GET /v1/marquee
-Animated SVG that scrolls the icons left in a seamless loop at ${marquee.speedPxPerS}px/s. ${icons.heightPx}px tall. Stops for viewers with reduced motion enabled.
+Animated SVG that scrolls the icons in a seamless loop, left by default at ${marquee.speedPxPerS}px/s. ${icons.heightPx}px tall. Stops for viewers with reduced motion enabled.
 
 Query parameters:
 - \`i\` (required): comma-separated icon names or short names, in display order. Max ${icons.maxPerRequest}. Case and surrounding spaces are ignored; duplicates are allowed.
 - \`width\` (optional): window width in px, a whole number from 1 to ${marquee.maxWidthPx}. The row repeats to fill it. Without it, the window is at most ${marquee.defaultWidthPx}px, or exactly one row if the row is shorter.
+- \`direction\` (optional): \`left\` (default) or \`right\`.
 
 ### GET /v1/icons
 Static SVG with the icons in one row, left to right in request order. ${icons.heightPx}px tall.
@@ -34,7 +35,7 @@ Query parameters:
 
 - 200 \`image/svg+xml\`, cached for ${icons.cacheMaxAgeS} seconds.
 - Unknown names are skipped: the response is still 200 with the known icons, and the skipped names are listed, URL-encoded and comma-separated, in the \`X-Unknown-Icons\` response header.
-- 400 \`application/json\` \`{"error": "..."}\` when \`i\` is missing or empty, has more than ${icons.maxPerRequest} names, contains no known name, or \`width\` is invalid.
+- 400 \`application/json\` \`{"error": "..."}\` when \`i\` is missing or empty, has more than ${icons.maxPerRequest} names, contains no known name, or \`width\` or \`direction\` is invalid.
 
 ## Theme
 
