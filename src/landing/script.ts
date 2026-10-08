@@ -10,12 +10,15 @@ export const script = `
   const preview = document.getElementById("preview");
   const status = document.getElementById("status");
   const modeButtons = document.querySelectorAll("[data-mode]");
+  const directionGroup = document.getElementById("directions");
+  const directionButtons = document.querySelectorAll("[data-direction]");
   const fields = {
     markdown: document.getElementById("snippet-markdown"),
     html: document.getElementById("snippet-html"),
     url: document.getElementById("snippet-url"),
   };
   let mode = "marquee";
+  let direction = "left";
   let timer;
   let requestId = 0;
 
@@ -23,7 +26,8 @@ export const script = `
     input.value.split(",").map((n) => n.trim().toLowerCase()).filter(Boolean);
 
   const pathFor = (list) =>
-    "/v1/" + mode + "?i=" + list.map(encodeURIComponent).join(",");
+    "/v1/" + mode + "?i=" + list.map(encodeURIComponent).join(",") +
+    (mode === "marquee" && direction === "right" ? "&direction=right" : "");
 
   async function update() {
     const list = names();
@@ -68,6 +72,15 @@ export const script = `
     button.addEventListener("click", () => {
       mode = button.dataset.mode;
       modeButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      directionGroup.hidden = mode !== "marquee";
+      update();
+    });
+  });
+
+  directionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      direction = button.dataset.direction;
+      directionButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
       update();
     });
   });

@@ -157,12 +157,21 @@ section { margin-top: clamp(3rem, 2rem + 3vw, 4rem); }
 
 .hint code, .spec code { color: var(--ink-strong); font-family: var(--font-mono); font-size: 0.95em; }
 
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-top: 1.25rem;
+}
+
 .modes {
   display: flex;
   gap: 0.5rem;
-  margin-top: 1.25rem;
   font-size: var(--text-small);
 }
+
+.modes[hidden] { display: none; }
 
 .modes button {
   padding: 0;

@@ -49,9 +49,15 @@ export const landingPage = `<!doctype html>
       <label class="sr-only" for="icons">Icons, comma-separated</label>
       <input id="icons" class="field-input" value="${playgroundIcons}" autocomplete="off" spellcheck="false" />
       <p class="hint">Comma-separated. Short names work: <code>js</code>, <code>ts</code>, <code>py</code>, <code>k8s</code>, <code>wasm</code>.</p>
-      <div class="modes" role="group" aria-label="Output">
-        <button type="button" data-mode="marquee" aria-pressed="true">Marquee</button>
-        <button type="button" data-mode="icons" aria-pressed="false">Static row</button>
+      <div class="controls">
+        <div class="modes" role="group" aria-label="Output">
+          <button type="button" data-mode="marquee" aria-pressed="true">Marquee</button>
+          <button type="button" data-mode="icons" aria-pressed="false">Static row</button>
+        </div>
+        <div id="directions" class="modes" role="group" aria-label="Direction">
+          <button type="button" data-direction="left" aria-pressed="true">Left</button>
+          <button type="button" data-direction="right" aria-pressed="false">Right</button>
+        </div>
       </div>
       <div class="preview">
         <div class="preview-stage"><img id="preview" src="/v1/marquee?i=${playgroundIcons}" alt="Preview" height="56" /></div>
@@ -69,13 +75,18 @@ export const landingPage = `<!doctype html>
       <ul class="spec">
         <li class="reveal">
           <h3><code>/v1/marquee?i=…</code></h3>
-          <p>Animated SVG that scrolls your icons left in a seamless loop. It stops for viewers who turn on reduced motion.</p>
+          <p>Animated SVG that scrolls your icons in a seamless loop. It stops for viewers who turn on reduced motion.</p>
           <p class="meta">${config.marquee.speedPxPerS}px/s · ${config.marquee.defaultWidthPx}px window by default</p>
         </li>
         <li class="reveal">
           <h3><code>width</code></h3>
           <p>Marquee only. Window width in px; the row repeats to fill it. Without it, the window shrinks to one row if shorter.</p>
           <p class="meta">Optional · 1 to ${config.marquee.maxWidthPx}</p>
+        </li>
+        <li class="reveal">
+          <h3><code>direction</code></h3>
+          <p>Marquee only. Which way the icons scroll: <code>left</code> or <code>right</code>.</p>
+          <p class="meta">Optional · left by default</p>
         </li>
         <li class="reveal">
           <h3><code>/v1/icons?i=…</code></h3>

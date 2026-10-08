@@ -64,7 +64,7 @@ Each icon's ids, and every reference to them, are prefixed with `i<index>-` when
 
 `src/routes/landing/index.ts` serves the page built in `src/landing/`. The page is plain HTML, CSS and one inline script held in TypeScript strings, with no framework or build step. Hono serves it rather than `public/`, so it behaves the same under `bun dev` and on Vercel.
 
-- The playground calls `/v1/marquee` or `/v1/icons` with `fetch` to surface errors, then shows the image and the Markdown, HTML and URL snippets.
+- The playground calls `/v1/marquee` or `/v1/icons` with `fetch` to surface errors, then shows the image and the Markdown, HTML and URL snippets. A Left/Right toggle, shown only for the marquee, adds `direction=right` to the URL when Right is picked; Left leaves the param out.
 - The response sends a Content-Security-Policy that allows the inline script by its SHA-256 hash, computed at startup. `img-src` also allows `data:` for the inline grain texture. A hash works with CDN caching, whereas a per-request nonce would be cached along with the page.
 - The visual style follows giann.dev: dark only (`color-scheme: dark`), near-black surface with film grain, warm ivory text in four levels and one mauve accent. Fonts are Libre Baskerville and Inter from Google Fonts.
 - `color-scheme: dark` also makes the embedded icon SVGs render their dark versions, whatever the visitor's system setting.
